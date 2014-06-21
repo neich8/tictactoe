@@ -38,3 +38,21 @@
 Board needs to exist -- DONE
 
 Choose first player 
+
+
+###ALGO PT 2
+
+Find Possible blocks
+If each have same space that blocks multiples take it
+	if more than one has that and can get 2 in one row
+		if corner spot available
+			TAKE IT!!!
+		end
+	end
+end
+
+## TO DOS
+
+Needs refactoring
+
+Diagonal grabs everything or NOTHING

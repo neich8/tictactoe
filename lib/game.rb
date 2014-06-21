@@ -4,7 +4,8 @@ require_relative "./board"
 class Game
 	attr_reader :player1, :computer, :board
 	def initialize
-		create_board
+		@board = Board.new
+		set_initial_order
 	end
 
 	def pick_order
@@ -12,33 +13,29 @@ class Game
 	end
 
 	def set_initial_order
-		create_players
-		if pick_order == 0
-			@player1.active = true
-			@computer.active = false
-			@player1.pick_piece
-			@computer.pick_piece
+		if 2 == pick_order
+			create_players(true, false)
+			turn(@player1)
 		else 
-			@computer.active = true
-			@player1.active = false
-			@computer.pick_piece
-			@player1.pick_piece
-			@player1.piece.type
+			create_players(false, true)
 		end
 	end
 
-	def create_board
-		@board = Board.new
+	def create_players(player_status, computer_status)
+		@player1 = Player.new(player_status)
+		@computer = Player.new(computer_status)
 	end
 
-	def create_players
-		@player1 = Player.new
-		@computer = Player.new 
+	def turn(player)
+		if player == @player1
+			puts "Pick a spot"
+			move(@player1, gets.chomp)
+		else
+			move(@computer)
+		end
 	end
-
 	def activate_player(player)
 		player.active = true
-
 	end
 
 	def deactivate_player(player)
@@ -49,30 +46,20 @@ class Game
 			activate_player(player1)
 		end
 	end
+
+
+
 ##need to move to Player Class
-	def move(player=nil, move=nil)
-		if player == nil && @computer.active == true
+	def move(active_player=nil, move=nil)
+		if active_player == @computer
 			@computer.auto_move(@board)
-		elsif player.active == true
-			@board.game_board[move] = player.piece.type
-			deactivate_player(player)
+		elsif active_player.active == true
+			if @board.game_board[move.to_i].is_a? Integer
+				@board.game_board[move] = active_player.piece.type
+				deactivate_player(active_player)
+			end
 		else
 			puts "No cheating"
 		end
 	end
-
-
-	
 end
-
-
-game = Game.new
-
-game.set_initial_order
-
-game.player1.piece
-
-puts game.board.game_board
- game.player1.active  = false
-puts game.move(game.player1, 1)
-puts game.board.game_board
