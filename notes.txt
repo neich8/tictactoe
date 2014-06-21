@@ -1,0 +1,58 @@
+##NOTES###
+
+#player can make a turn
+	#first person to go is random
+
+#Board is an array with 9 spots
+	#can be sorted differently to easily check for matches in rows and columns and diagonal
+
+#Rotate players turns
+
+
+
+
+
+# Need Table with 9 spaces
+## needs to have 3 rows or 
+# Need to have X's and O's
+# spaces can only have an X or O
+
+
+###ALGORITHM####
+
+1. First move should be middle spot
+	If not go for random corner either 1, 3, 7, or 9
+2. Second move match player 2's row column or diagonal then follow rule 1 if possible
+
+#starting on move three
+3. See if 3 in a row can be completed if so then do it
+
+4. If other player has two in a row block it!
+
+
+
+##ORDER OF STUFF####
+
+# To start game 
+
+Board needs to exist -- DONE
+
+Choose first player 
+
+
+###ALGO PT 2
+
+Find Possible blocks
+If each have same space that blocks multiples take it
+	if more than one has that and can get 2 in one row
+		if corner spot available
+			TAKE IT!!!
+		end
+	end
+end
+
+## TO DOS
+
+Needs refactoring
+
+Diagonal grabs everything or NOTHING
