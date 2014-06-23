@@ -83,10 +83,10 @@ class Player
 end
 
 
-@board = Board.new
-@player = Player.new(true)
-@player.auto_move(@board)
-@board.game_board[0] = "O"
-@board.game_board[3] = "O"
-@player.find_move
-p @board.open_corner
+# @board = Board.new
+# @player = Player.new(true)
+# @player.auto_move(@board)
+# @board.game_board[0] = "O"
+# @board.game_board[3] = "O"
+# @player.find_move
+# p @board.open_corner

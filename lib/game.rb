@@ -2,71 +2,75 @@ require_relative "./player"
 require_relative "./board"
 
 class Game
-	attr_reader :player1, :computer, :board
+	attr_reader :player1, :player2, :board
 	def initialize
 		@board = Board.new
-		set_initial_order
+		add_players
 	end
 
-	def pick_order
-		rand(2)
-	end
-
-	def set_initial_order
-		if 2 == pick_order
-			create_players(true, false)
-			turn(@player1)
-		else 
-			create_players(false, true)
-		end
-	end
-
-	def create_players(player_status, computer_status)
-		@player1 = Player.new(player_status)
-		@computer = Player.new(computer_status)
-	end
-
-	def turn(player)
-		if player == @player1
-			puts "Pick a spot"
-			move(@player1, gets.chomp)
+	def add_players
+		if pick_first_player == 1
+			activate_players(true, false)
 		else
-			move(@computer)
+			activate_players(false,true)
 		end
 	end
 
-	def activate_player(player)
-		player.active = true
-	end
-
-	def deactivate_player(player)
-		player.active = false
-		if player == @player1
-			activate_player(computer)
-		else 
-			activate_player(player1)
-		end
-	end
-
-
-
-##need to move to Player Class
-	def move(active_player=nil, move=nil)
-		if active_player == @computer
-			@computer.auto_move(@board)
-		elsif active_player.active == true
-			if @board.game_board[move.to_i].is_a? Integer
-				@board.game_board[move] = active_player.piece.type
-				deactivate_player(active_player)
+	def move(player, spot)
+		if player.active == true
+			if @board.game_board[spot - 1].is_a? Integer
+				@board.game_board[spot - 1] = player.piece.type
+				over?
+				next_player
 			end
-		else
-			puts "No cheating"
 		end
 	end
-
 
 	def over?
-		@board.find_three_in_a_row
-		
+		sort_board
+		if three_in_a_(board.rows) == true || three_in_a_(board.columns) == true || three_in_a_(board.diagonals) == true
+			true
+		end
+	end
+
+	def sort_board
+		@board.find_rows
+		@board.find_columns
+		@board.find_diagonals
+	end
+
+	private
+
+	def three_in_a_(area)
+		area.each do |row|
+			if row == Array.new(3, find_player[:active].piece.type)
+				return true
+			end
+		end
+	end
+
+
+	def next_player
+		find_player[:active].active = false
+		find_player[:inactive].active = true
+	end
+
+	def find_player
+		if @player1.active == true
+			{active: @player1, inactive: @player2}
+		else
+			{active: @player2, inactive: @player2}
+		end
+	end
+
+
+	def activate_players(player1_status, player2_status)
+		@player1 = Player.new(player1_status)
+		@player2 = Player.new(player2_status)
+	end
+
+	def pick_first_player
+		rand(2)
 	end
 end
+

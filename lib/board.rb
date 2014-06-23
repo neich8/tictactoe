@@ -1,16 +1,17 @@
 class Board
-attr_reader :middle, :side_length, :corners, :diagonals
+attr_reader  :side_length, :corners, :diagonals, :game_board, :rows, :columns
 	def initialize
 		@game_board = (1..9).to_a
 		@corners = []
+		find_side_length
 	end
 
 	def middle
-		(@game_board.length-1) / 2
+		@game_board[(@game_board.length) / 2]
 	end
 
 	def find_corners
-		find_side_length
+
 		corner_seperation = @side_length - 1
 		corners[0] = @game_board.first
 		corners[1] = @game_board[0 + corner_seperation]
@@ -18,38 +19,42 @@ attr_reader :middle, :side_length, :corners, :diagonals
 		corners[3] = @game_board.last
 	end
 
-	def show_rows
-		@game_board.each_slice(@side_length).to_a
+	def find_rows
+		@rows = @game_board.each_slice(@side_length).to_a
 	end
 
-	def show_columns
-		show_rows.transpose
+	def find_columns
+		@columns = find_rows.transpose
 	end
 
-	def show_diagonals
+	def find_diagonals
 		@diagonals = []
 		@diagonals << diag_down_left
 		@diagonals << diag_down_right
 	end
 
+	def display
+		@game_board.each_slice(3).to_a.each {|row|
+	 	p row}
+	end
 
 
 	private
 
-	def diag_down_left
+	def diag_down_right
 		down_left = []
 		diagonal_spot = @side_length - 1
-		show_rows.each do |row|
+		find_rows.each do |row|
 			down_left << row[diagonal_spot]
 			diagonal_spot -= 1
 		end
 		down_left
 	end
 
-	def diag_down_right
+	def diag_down_left
 		down_right = []
 		diagonal_spot = 0
-		show_rows.each do |row|
+		find_rows.each do |row|
 	 		down_right << row[diagonal_spot]
 	 		diagonal_spot += 1
 		end
@@ -72,9 +77,9 @@ end
 
 
 board = Board.new
-board.find_corners
-p board.show_diagonals
 
+
+board.find_rows
 
 
 
