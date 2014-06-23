@@ -1,124 +1,229 @@
 class Board
-	attr_accessor :game_board, :middle
+attr_reader :middle, :side_length, :corners, :diagonals
 	def initialize
 		@game_board = (1..9).to_a
-		@middle = game_board[mid]
-	end
-
-	def middle=(piece)
-		game_board[mid] = piece
+		@corners = []
 	end
 
 	def middle
-		game_board[mid]
+		(@game_board.length-1) / 2
 	end
 
-	def open_corner
-		@game_board.map{|space| space if space % 2 != 0}[0]
+	def find_corners
+		find_side_length
+		corner_seperation = @side_length - 1
+		corners[0] = @game_board.first
+		corners[1] = @game_board[0 + corner_seperation]
+		corners[2] = @game_board[(@game_board.length - 1) - corner_seperation]
+		corners[3] = @game_board.last
 	end
 
-	def row_search
-		rows_count = 0
-		posible_spots = []
-		while rows_count < 3
-			if	row(rows_count).include?("O") #and doesnt include "X"
-				posible_spots << row(rows_count)
-			end
-			rows_count += 1
-		end
-		posible_spots.flatten
+	def show_rows
+		@game_board.each_slice(@side_length).to_a
 	end
 
-	def column_search
-		columns_count = 0
-		posible_spots = []
-		while columns_count < @game_board.length / 3
-			if column(columns_count).include?("O")
-				posible_spots << column(columns_count)
-			end
-			columns_count += 1
-		end
-		posible_spots.flatten
+	def show_columns
+		show_rows.transpose
 	end
 
-	def diagonal_search
-			if diagonal.include?("O")
-				diagonal.flatten.uniq
-			end
+	def show_diagonals
+		@diagonals = []
+		@diagonals << diag_down_left
+		@diagonals << diag_down_right
 	end
 
-	def row(row_number)
-		@game_board.select.with_index { |number, index|  (index) / 3 == row_number}
-	end
 
-	def column(col_number)
-		iterate_unusually(col_number, 3)
-	end
-#start must be either 0 or 2
-	def diagonal
-		diag_down_right + diag_down_left
-	end
 
-def two_in_a_row(row_num)
-	counter = 0
-	array = row(row_num)
-	array.each do |spot| 
-		if spot == "O"
-			counter += 1
-		end
-	end
-
-	if counter == 2
-		array << "ALERT"
-	end
-	array
-end
-
-	def display
-	 @game_board.each_slice(3).to_a.each {|row|
-	 	p row}
-	end
-
-	private 
+	private
 
 	def diag_down_left
-		i = 2
-		diags = []
-		while i <= 6
-			diags << @game_board[i]
-			i += 2
+		down_left = []
+		diagonal_spot = @side_length - 1
+		show_rows.each do |row|
+			down_left << row[diagonal_spot]
+			diagonal_spot -= 1
 		end
-		diags
+		down_left
 	end
-
 
 	def diag_down_right
-				diagonals = []
-		@game_board.each_with_index do |spot, index|
-			if index % 4 == 0 
-				diagonals << spot
+		down_right = []
+		diagonal_spot = 0
+		show_rows.each do |row|
+	 		down_right << row[diagonal_spot]
+	 		diagonal_spot += 1
+		end
+		down_right
+	end
+
+	def find_side_length
+		area = @game_board.length
+		guess = @game_board.length 
+		while guess > 0
+			if guess * guess == area
+				@side_length = guess
+				break
 			end
+			guess -= 1
 		end
-		diagonals
 	end
-
-	def mid
-		(@game_board.length - 1) / 2
-	end
-
-	def iterate_unusually(start,direction)
-		answer = []
-		while answer.length < direction
-			answer << @game_board[start] 
-			start += direction
-		end
-		answer
-	end
-
 end
 
+
+
 board = Board.new
-board.display
-# board.game_board[0] = "O"
-# board.game_board[1] = "O"
-# puts board.two_in_a_row(0)
+board.find_corners
+p board.show_diagonals
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 	attr_accessor :game_board, :middle
+# 	def initialize
+# 		@game_board = (1..9).to_a
+# 		@middle = game_board[mid]
+# 	end
+
+# 	def middle=(piece)
+# 		game_board[mid] = piece
+# 	end
+
+# 	def middle
+# 		game_board[mid]
+# 	end
+
+# 	def open_corner
+# 		p @game_board.map{|space| 
+# 			if space % 2 != 0 && space.class == Fixnum
+# 				space
+# 			end
+# 			}.compact
+# 	end
+
+# 	def row_search
+# 		rows_count = 0
+# 		posible_spots = []
+# 		while rows_count < 3
+# 			if	pull_row(rows_count).include?("O") #and doesnt include "X"
+# 				find_two_in_a_row(rows_count)
+# 				posible_spots << pull_row(rows_count)
+# 			end
+# 			rows_count += 1
+# 		end
+# 		posible_spots.flatten
+# 	end
+
+# 	def column_search
+# 		columns_count = 0
+# 		posible_spots = []
+# 		while columns_count < @game_board.length / 3
+# 			if pull_column(columns_count).include?("O")
+# 				find_two_in_a_row(columns_count)
+# 				posible_spots << pull_column(columns_count)
+# 			end
+# 			columns_count += 1
+# 		end
+# 		posible_spots.flatten
+# 	end
+
+# 	def diagonal_search
+# 		if diagonal.include?("O")
+# 			find_two_in_a_row
+# 			diagonal.flatten.uniq
+# 		end
+# 	end
+
+# 	def pull_row(row_number)
+# 		@game_board.select.with_index { |number, index|  (index) / 3 == row_number}
+# 	end
+
+# 	def pull_column(col_number)
+# 		answer = []
+# 		while answer.length < 3
+# 			answer << @game_board[col_number] 
+# 			col_number += 3
+# 		end
+# 		answer
+# 	end
+# #start must be either 0 or 2
+# 	def diagonal
+# 		diag_down_right + diag_down_left
+# 	end
+
+# 	def two_in_a_row(row_num)
+# 		counter = 0
+# 		array = pull_row(row_num)
+# 		array.each do |spot| 
+# 			if spot == "O"
+# 				counter += 1
+# 			end
+# 		end
+# 		if counter == 2
+# 			array << "ALERT"
+# 		end
+# 		array
+# 	end
+
+# 	def display
+# 		@game_board.each_slice(3).to_a.each {|row|
+# 	 	p row}
+# 	end
+
+# 	private 
+
+# 	def pull_diag_down_left
+# 		i = 2
+# 		diags = []
+# 		while i <= 6
+# 			diags << @game_board[i]
+# 			i += 2
+# 		end
+# 		diags
+# 	end
+
+
+# 	def pull_diag_down_right
+# 		diagonals = []
+# 		@game_board.each_with_index do |spot, index|
+# 			if index % 4 == 0 
+# 				diagonals << spot
+# 			end
+# 		end
+# 		diagonals
+# 	end
+
+# 	def mid
+# 		(@game_board.length - 1) / 2
+# 	end

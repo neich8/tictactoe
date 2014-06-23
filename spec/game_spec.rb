@@ -51,9 +51,14 @@ describe "::Game" do
 
   it "runs move" do
   	@game.turn(@game.player1)
-  	expect(@game).to have_received(@game.move)
   end
 
+  it "lets me know when over" do
+  		@game.board.game_board[0] = "O"
+  		@game.board.game_board[1] = "O"
+  		@game.board.game_board[2] = "O"
+  	expect(@game.over?).to eql(true)
+  end
 end
 
 

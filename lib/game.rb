@@ -34,6 +34,7 @@ class Game
 			move(@computer)
 		end
 	end
+
 	def activate_player(player)
 		player.active = true
 	end
@@ -61,5 +62,11 @@ class Game
 		else
 			puts "No cheating"
 		end
+	end
+
+
+	def over?
+		@board.find_three_in_a_row
+		
 	end
 end
