@@ -1,0 +1,30 @@
+
+
+##Piece.rb
+##Holds piece object for each player
+
+
+Player.rb
+Controls moving each persons player on the board
+	has a module for the AI
+
+
+Game.rb
+	holds game rules ie no cheating
+	lets player put piece on board
+	creates game
+	rotates players
+	decides when game is over
+
+
+
+
+
+****REFACTORING****
+Board.rb
+	is the board object
+	gives back board info when requested
+		DONE -> shows corners
+		shows columns
+		shows rows
+		shows diagonals

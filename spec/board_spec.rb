@@ -57,5 +57,11 @@ describe "Board" do
 		expect(board.diagonal_search).to include([5, 9].sample)
 	end
 
+	it "finds three in a row" do
+		board.game_board[0] = "O"
+  	board.game_board[4] = "O"
+		board.game_board[8] = "O"
+		expect(board.find_three_in_a_row).to eql(true)
+	end
 
 end
