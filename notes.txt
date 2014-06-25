@@ -53,6 +53,13 @@ end
 
 ## TO DOS
 
-Needs refactoring
+Instantiate ALgorithim Module
+	1 check to make three in a row -> DONE
+	2 check for enemy two in a row. -> DONE
 
-Diagonal grabs everything or NOTHING
+		3 if Comp has two in a row do it -> DONE
+			6 check to create two in a row -> DONE
+				5 Check to see if any blocks -> DONE
+					6 check corners -> DONE
+						7 if both put in that spot -> DONE
+				8 if no blocks put in middle  -> DONE

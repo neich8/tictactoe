@@ -21,6 +21,8 @@ Game.rb
 Player.rb
 Controls moving each persons player on the board
 	has a module for the AI
+		Module Makes "recommendations to player"
+		Player Can Be computer or player
 
 
 

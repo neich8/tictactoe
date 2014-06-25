@@ -11,7 +11,6 @@ attr_reader  :side_length, :corners, :diagonals, :game_board, :rows, :columns
 	end
 
 	def find_corners
-
 		corner_seperation = @side_length - 1
 		corners[0] = @game_board.first
 		corners[1] = @game_board[0 + corner_seperation]
