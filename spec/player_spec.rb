@@ -6,7 +6,7 @@ describe "::Player" do
 
   before(:each) do
    	@board = Board.new
-   	@player = Player.new(true)
+   	@player = Player.new(true, true)
 
   end
 
@@ -42,8 +42,8 @@ describe "Computer player" do
 	it "blocks two in a row" do
 		@board.game_board[0] = "O"
 		@board.game_board[1] = "O"
-		@player.block_two_in_a_row(@board)
-		expect(@board.game_board[2]).to eql("X")
+		
+		expect(@player.block_two_in_a_row(@board)).to eql(3)
 	end
 
 	it "finds blocks for single moves" do
@@ -58,25 +58,24 @@ describe "Computer player" do
 
 	it "puts in a corner and block spot if possible" do
 		@board.game_board[6] = "O"
-		@player.block(@board)
-		expect(@board.game_board[0]).to eql("X")
+		expect(@player.block(@board)).to eql(9)
 	end
 
 	it "completes three in a row" do 
 		@board.game_board[6] = "X"
 		@board.game_board[7] = "X"
-		@player.end_game(@board)
-		expect(@board.game_board[8]).to eql("X")
+
+		expect(@player.end_game(@board)).to eql(9)
 	end
 
 	it "creates two in a row" do
 		@board.game_board[2] = "X"
-		@player.create_two(@board)
-		expect(@board.game_board[0]).to eql("X")
+
+		expect(@player.create_two(@board)).to eql(1)
 	end
 
-	it "makes first move in the middle" do
-		@player.middle(@board)
-		expect(@board.game_board[4]).to eql("X")
-	end
+	# it "makes first move in the middle" do
+	# 	@player.middle(@board)
+	# 	expect(@board.game_board[4]).to eql("X")
+	# end
 end

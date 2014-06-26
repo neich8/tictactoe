@@ -1,6 +1,6 @@
 require_relative "./player"
 require_relative "./board"
-require "byebug"
+
 class Game
 	attr_accessor :players
 	attr_reader :player1, :player2, :board
@@ -15,7 +15,7 @@ class Game
 		else
 			activate_players(false,true)
 		end
-		turn
+		 # turn
 	end
 
 	def turn
@@ -27,9 +27,10 @@ class Game
 			puts "Type a number to pick a spot"
 			move(@player1, gets.chomp.to_i)
 		else
-			@player2.middle(board)
+			move(@player2, @player2.ai_move(@board))
 			puts "Computers turn"
 		end
+		next_player
 	end
 
 	def move(player, spot)
@@ -37,7 +38,6 @@ class Game
 			if @board.game_board[spot - 1].is_a? Integer
 				@board.game_board[spot - 1] = player.piece.type
 				if over? == true
-
 					end_game
 				end
 				next_player
@@ -46,7 +46,6 @@ class Game
 	end
 
 	def over?
-
 		sort_board
 		if three_in_a_(board.rows) == true || three_in_a_(board.columns) == true || three_in_a_(board.diagonals) == true
 			true
@@ -69,7 +68,7 @@ class Game
 
 	def three_in_a_(area)
 		area.each do |row|
-			if row == Array.new(3, @player1.piece.type)
+			if row == Array.new(3, @player2.piece.type)
 				return true
 			end
 		end
@@ -81,7 +80,6 @@ class Game
 #after first turn it just rotates between the same two1
 	def next_player
 		puts "Next Player is being set"
-
 		sleep 1
 		if @player1.active
 
@@ -96,8 +94,7 @@ class Game
 						puts "player twos turn"
 			puts @player2.active
 		end
-
-		turn
+		 # turn
 	end
 
 	def find_player

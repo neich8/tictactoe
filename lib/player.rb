@@ -1,9 +1,9 @@
 require_relative "./pieces"
 require_relative "./board"
 require_relative "./computer_module"
+require "byebug"
+#The computer doesnt know when to stop putting pieces on the board
 class Player 
-
-
 	attr_accessor :active, :human
 	attr_reader :piece, :board, :opposing_piece
 	def initialize(active, human_status)
@@ -22,6 +22,20 @@ class Player
 		end
 	end
 
+	def ai_move(board)
+		if end_game(board).is_a? Integer
+			return end_game(board)
+		elsif block_two_in_a_row(board).is_a? Integer
+			return block_two_in_a_row(board)
+		elsif middle(board).is_a? Integer
+			return middle(board)
+		elsif block(board).is_a? Integer
+			return block(board)
+		elsif create_two(board).is_a? Integer
+			return create_two(board)
+		end
+	end
+
 	def block_two_in_a_row(board, piece= @opposing_piece)
 		blocks = []
 		if Computer.two_in_a_row(board, piece).is_a? Integer
@@ -31,20 +45,26 @@ class Player
 		elsif Computer.two_in_a_diagonal(board, piece).is_a? Integer
 			blocks << Computer.two_in_a_diagonal(board, piece)
 		end
-		board.game_board[blocks[0] - 1] = @piece.type
+		if blocks.length > 0
+			blocks[0]
+		end
 	end
 
 	def block(board)
-		board.game_board[(compare_moves_corners(board).first - 1)] = piece.type
+		if compare_moves_corners(board).length > 0
+			compare_moves_corners(board).max_by{|num| num.size}
+		end
 	end
 
 	def create_two(board)
-		board.game_board[find_moves(board, piece.type).first - 1] = piece.type
+		if find_moves(board, piece.type).length != 0
+			find_moves(board, piece.type).max_by{|num| num.size}
+		end
 	end
 
 	def middle(board)
 		if board.game_board[4].is_a? Integer
-			board.game_board[4] = piece.type
+			board.game_board[4]
 		end
 	end
 
@@ -53,12 +73,14 @@ class Player
 			moves << Computer.row_includes?(board, piece)
 			moves << Computer.column_includes?(board, piece)
 			moves << Computer.diagonal_includes?(board, piece)
-		moves.flatten!.sort
+
+		moves.flatten!
 	end
 
 	def compare_moves_corners(board)
 		board.find_corners
 		find_moves(board).select {|spot| board.corners.include? spot}
+
 	end
 
 	def end_game(board)
@@ -68,12 +90,12 @@ class Player
 end
 
 
-@player = Player.new(true, true)
-@player.active = false
-puts @player.human
-@player.active = true
-puts @player.human
-@board = Board.new
+# @player = Player.new(true, true)
+# @player.active = false
+# puts @player.human
+# @player.active = true
+# puts @player.human
+# @board = Board.new
 # @board.game_board[6] = "O"
 # @board.game_board[7] = "O"
 # @player.block_two_in_a_row(@board)

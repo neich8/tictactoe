@@ -63,3 +63,9 @@ Instantiate ALgorithim Module
 					6 check corners -> DONE
 						7 if both put in that spot -> DONE
 				8 if no blocks put in middle  -> DONE
+
+
+				If more than one two way win 
+				then create 2 in a row while avoiding two way wins
+
+				needs to go up 3 moves

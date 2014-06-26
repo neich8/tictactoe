@@ -35,7 +35,8 @@ module Computer
 	def self.column_includes?(board, piece)
 		board.find_columns.each do |column|
 			if column.include? piece
-				return column.select{|spot| spot.is_a? Integer}
+
+				column.select!{|spot| spot.is_a? Integer}
 			end
 		end
 	end
