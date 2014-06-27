@@ -17,21 +17,21 @@ describe "::Game" do
 	end
 
 	it "allows player to move" do
-		@player1 = Player.new(true)
+		@player1 = Player.new(true, true)
 		@game.move(@player1, 1)
 		expect(@game.board.game_board[0]).to eql("X")
 	end
 
 	it "wont let you put on top of another piece" do
-		@player1 = Player.new(true)
-		@player2 = Player.new(false)
+		@player1 = Player.new(true, true)
+		@player2 = Player.new(false, false)
 		@game.move(@player1, 1)
 		@game.move(@player2, 1)
 		expect(@game.board.game_board[0]).to eql("X")
 	end
 
 	it "only allows active player to move" do
-		@player1 = Player.new(false)
+		@player1 = Player.new(false, true)
 		@game.move(@player1, 1)
 		expect(@game.board.game_board[0]).to eql(1)
 	end
@@ -65,6 +65,7 @@ describe "::Game" do
   		@game.board.game_board[2] = "X"
   	expect(@game.over?).to eql(true)
   end
+
 end
 
 
