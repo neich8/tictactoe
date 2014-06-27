@@ -6,7 +6,7 @@ module Computer
 		two_rows = []
 		board.find_rows.each do |row|
 			if row.count(piece) == 2 
-				unless row.include?("X")
+				unless row.include?(find_piece(piece))
 					two_rows << row.select{|spot| spot.is_a? Integer}
 				end
 			end
@@ -18,7 +18,7 @@ module Computer
 		two_columns = []
 		board.find_columns.each do |column|
 			if column.count(piece) == 2
-				unless column.include?("X")
+				unless column.include?(find_piece(piece))
 					two_columns << column.select{|spot| spot.is_a? Integer}
 				end
 			end
@@ -30,7 +30,7 @@ module Computer
 		two_diagonals = []
 		board.find_diagonals.each do |diagonal|
 			if diagonal.count(piece) == 2
-				unless diagonal.include?("X")
+				unless diagonal.include?(find_piece(piece))
 					two_diagonals << diagonal.select{|spot| spot.is_a? Integer}
 				end
 			end

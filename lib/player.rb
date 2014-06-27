@@ -86,7 +86,7 @@ class Player
 	end
 
 	def end_game(board)
-		block_two_in_a_row(board, @piece.type)
+		block_two_in_a_row(board, @piece.type)[0]
 	end
 
 	def find_possible_two_ways(board, piece)
@@ -125,3 +125,4 @@ end
 		# @board.display
 		p "\n\n\n"
 p @player.find_possible_two_ways(@board, "O")
+
