@@ -65,6 +65,7 @@ describe "::Game" do
   		@game.board.game_board[2] = "X"
   	expect(@game.over?).to eql(true)
   end
+
 end
 
 

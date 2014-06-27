@@ -1,27 +1,41 @@
+require "byebug"
+
 module Computer
 
 	def self.two_in_a_row(board, piece)
+		two_rows = []
 		board.find_rows.each do |row|
-			if row.count(piece) == 2
-				return row.select{|spot| spot.is_a? Integer}[0]
+			if row.count(piece) == 2 
+				unless row.include?("X")
+					two_rows << row.select{|spot| spot.is_a? Integer}
+				end
 			end
 		end
+		two_rows.flatten
 	end
 
 	def self.two_in_a_column(board, piece)
+		two_columns = []
 		board.find_columns.each do |column|
 			if column.count(piece) == 2
-				return column.select{|spot| spot.is_a? Integer}[0]
+				unless column.include?("X")
+					two_columns << column.select{|spot| spot.is_a? Integer}
+				end
 			end
 		end
+		two_columns.flatten
 	end
 
 	def self.two_in_a_diagonal(board, piece)
+		two_diagonals = []
 		board.find_diagonals.each do |diagonal|
 			if diagonal.count(piece) == 2
-				return diagonal.select{|spot| spot.is_a? Integer}[0]
+				unless diagonal.include?("X")
+					two_diagonals << diagonal.select{|spot| spot.is_a? Integer}
+				end
 			end
 		end
+		two_diagonals.flatten
 	end
 
 	def self.row_includes?(board, piece)
@@ -36,7 +50,7 @@ module Computer
 		board.find_columns.each do |column|
 			if column.include? piece
 
-				column.select!{|spot| spot.is_a? Integer}
+				column.select{|spot| spot.is_a? Integer}
 			end
 		end
 	end
@@ -46,6 +60,18 @@ module Computer
 			if diagonal.include? piece
 				return diagonal.select{|spot| spot.is_a? Integer}
 			end
+		end
+	end
+
+	def self.two_way_loses(board,piece)
+
+	end
+
+	def self.find_piece(piece)
+		if piece == "X"
+			"O"
+		else
+			"X"
 		end
 	end
 end

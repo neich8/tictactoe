@@ -7,7 +7,6 @@ describe "::Player" do
   before(:each) do
    	@board = Board.new
    	@player = Player.new(true, true)
-
   end
 
   it "can be a computer or human" do
@@ -24,26 +23,25 @@ describe "Computer player" do
 	it "checks for two in a row" do
 		@board.game_board[0] = "O"
 		@board.game_board[1] = "O"
-		expect(Computer.two_in_a_row(@board, "O")).to eql(3)
+		expect(Computer.two_in_a_row(@board, "O")).to include(3)
 	end
 
 	it "checks for two in a row" do
 		@board.game_board[0] = "O"
 		@board.game_board[3] = "O"
-		expect(Computer.two_in_a_column(@board, "O")).to eql(7)
+		expect(Computer.two_in_a_column(@board, "O")).to include(7)
 	end
 
 	it "checks for two in a diagonal" do
 		@board.game_board[0] = "O"
 		@board.game_board[4] = "O"
-		expect(Computer.two_in_a_diagonal(@board, "O")).to eql(9)
+		expect(Computer.two_in_a_diagonal(@board, "O")).to include(9)
 	end
 
 	it "blocks two in a row" do
 		@board.game_board[0] = "O"
 		@board.game_board[1] = "O"
-		
-		expect(@player.block_two_in_a_row(@board)).to eql(3)
+		expect(@player.block_two_in_a_row(@board)).to include(3)
 	end
 
 	it "finds blocks for single moves" do
@@ -64,14 +62,19 @@ describe "Computer player" do
 	it "completes three in a row" do 
 		@board.game_board[6] = "X"
 		@board.game_board[7] = "X"
-
 		expect(@player.end_game(@board)).to eql(9)
 	end
 
 	it "creates two in a row" do
 		@board.game_board[2] = "X"
-
 		expect(@player.create_two(@board)).to eql(1)
+	end
+
+	it "can pick find all possible two way loses" do
+		@board.game_board[8] = "O"
+		@board.game_board[3] = "O"
+		@board.game_board[1] = "X"
+		expect(@player.find_possible_two_ways(@board, "O")).to include([1,5,6,7].sample)
 	end
 
 	# it "makes first move in the middle" do

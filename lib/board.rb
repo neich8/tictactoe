@@ -78,7 +78,7 @@ end
 board = Board.new
 
 
-board.find_rows
+p board.find_diagonals
 
 
 
