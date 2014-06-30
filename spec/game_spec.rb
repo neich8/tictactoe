@@ -63,7 +63,7 @@ describe "::Game" do
   		@game.board.game_board[0] = "X"
   		@game.board.game_board[1] = "X"
   		@game.board.game_board[2] = "X"
-  	expect(@game.over?).to eql(true)
+  	expect(@game.over?(@player1)).to eql(true)
   end
 
 end

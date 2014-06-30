@@ -56,7 +56,7 @@ describe "Computer player" do
 
 	it "puts in a corner and block spot if possible" do
 		@board.game_board[6] = "O"
-		expect(@player.block(@board)).to eql(9)
+		expect(@player.block(@board)).to include(9)
 	end
 
 	it "completes three in a row" do 
@@ -75,6 +75,13 @@ describe "Computer player" do
 		@board.game_board[3] = "O"
 		@board.game_board[1] = "X"
 		expect(@player.find_possible_two_ways(@board, "O")).to include([1,5,6,7].sample)
+	end
+
+	it "picks spot to stop two way loses" do
+		@board.game_board[8] = "O"
+		@board.game_board[3] = "O"
+		@board.game_board[1] = "X"
+		expect(@player.block_two_way_lose(@board, "O")).to eql(1)
 	end
 
 	# it "makes first move in the middle" do

@@ -75,11 +75,6 @@ end
 
 
 
-board = Board.new
-
-
-p board.find_diagonals
-
 
 
 

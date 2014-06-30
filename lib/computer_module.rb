@@ -6,7 +6,7 @@ module Computer
 		two_rows = []
 		board.find_rows.each do |row|
 			if row.count(piece) == 2 
-				unless row.include?("X")
+				unless row.include?(find_piece(piece))
 					two_rows << row.select{|spot| spot.is_a? Integer}
 				end
 			end
@@ -18,7 +18,7 @@ module Computer
 		two_columns = []
 		board.find_columns.each do |column|
 			if column.count(piece) == 2
-				unless column.include?("X")
+				unless column.include?(find_piece(piece))
 					two_columns << column.select{|spot| spot.is_a? Integer}
 				end
 			end
@@ -30,7 +30,7 @@ module Computer
 		two_diagonals = []
 		board.find_diagonals.each do |diagonal|
 			if diagonal.count(piece) == 2
-				unless diagonal.include?("X")
+				unless diagonal.include?(find_piece(piece))
 					two_diagonals << diagonal.select{|spot| spot.is_a? Integer}
 				end
 			end
@@ -41,7 +41,11 @@ module Computer
 	def self.row_includes?(board, piece)
 		board.find_rows.each do |row|
 			if row.include? piece
-				return row.select{|spot| spot.is_a? Integer}
+				# unless row.include? Computer.find_piece(piece)
+					# puts "row includes my piece only"
+					# p row
+					return row.select{|spot| spot.is_a? Integer}
+				# end
 			end
 		end
 	end
@@ -49,8 +53,11 @@ module Computer
 	def self.column_includes?(board, piece)
 		board.find_columns.each do |column|
 			if column.include? piece
-
-				column.select{|spot| spot.is_a? Integer}
+				# unless column.include? Computer.find_piece(piece)
+					# puts "column includes my piece only"
+					# p column
+					return column.select{|spot| spot.is_a? Integer}
+				# end
 			end
 		end
 	end
@@ -58,7 +65,11 @@ module Computer
 	def self.diagonal_includes?(board, piece)
 		board.find_diagonals.each do |diagonal|
 			if diagonal.include? piece
-				return diagonal.select{|spot| spot.is_a? Integer}
+				# unless diagonal.include? Computer.find_piece(piece)
+				# 		# puts "diagonal includes my piece only"
+				# 		# p column
+					return diagonal.select{|spot| spot.is_a? Integer}
+				# end
 			end
 		end
 	end

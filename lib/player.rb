@@ -25,10 +25,12 @@ class Player
 	def ai_move(board)
 		if end_game(board).is_a? Integer
 			return end_game(board)
-		elsif block_two_in_a_row(board).is_a? Integer
-			return block_two_in_a_row(board)
 		elsif middle(board).is_a? Integer
 			return middle(board)
+		elsif block_two_way_lose(board).is_a? Integer
+			return block_two_way_lose(board)
+		elsif block_two_in_a_row(board)[0].is_a? Integer
+			return block_two_in_a_row(board)[0]
 		elsif block(board).is_a? Integer
 			return block(board)
 		elsif create_two(board).is_a? Integer
@@ -38,28 +40,20 @@ class Player
 
 	def block_two_in_a_row(board, piece= @opposing_piece)
 		blocks = []
-
-		if Computer.two_in_a_row(board, piece)
-			blocks << Computer.two_in_a_row(board, piece)
-		end
-		if Computer.two_in_a_column(board, piece)
-			blocks << Computer.two_in_a_column(board, piece)
-		end
-		if Computer.two_in_a_diagonal(board, piece)
-			blocks << Computer.two_in_a_diagonal(board, piece)
-		end
-		p	blocks.flatten!
-		blocks
+		blocks << Computer.two_in_a_row(board, piece)
+		blocks << Computer.two_in_a_column(board, piece)
+		blocks << Computer.two_in_a_diagonal(board, piece)
+		blocks.flatten
 	end
 
 	def block(board)
-		if compare_moves_corners(board).length > 0
-			compare_moves_corners(board).max_by{|num| num.size}
-		end
+		# if compare_moves_corners(board).length > 0
+			compare_moves_corners(board)
+		# end
 	end
 
 	def create_two(board)
-		if find_moves(board, piece.type).length != 0
+		if find_moves(board, piece.type).length != 0 
 			find_moves(board, piece.type).max_by{|num| num.size}
 		end
 	end
@@ -75,53 +69,46 @@ class Player
 			moves << Computer.row_includes?(board, piece)
 			moves << Computer.column_includes?(board, piece)
 			moves << Computer.diagonal_includes?(board, piece)
-
 		moves.flatten!
 	end
 
 	def compare_moves_corners(board)
 		board.find_corners
 		find_moves(board).select {|spot| board.corners.include? spot}
-
 	end
 
 	def end_game(board)
-		block_two_in_a_row(board, @piece.type)
+		block_two_in_a_row(board, @piece.type)[0]
 	end
 
-	def find_possible_two_ways(board, piece)
+	def find_possible_two_ways(board, piece= @opposing_piece)
 		possible_two_ways = []
-		temp_board = board
-		temp_board.game_board.each do |spot|
+		board.game_board.each do |spot|
 			if spot.is_a? Integer
-				p spot
-				temp_board.game_board[spot -1] = piece
-					if block_two_in_a_row(temp_board, piece).length > 0
-						possible_two_ways << block_two_in_a_row(temp_board, piece)
+				board.game_board[spot -1] = piece
+					if block_two_in_a_row(board, piece).length > 0
+						possible_two_ways << block_two_in_a_row(board, piece)
 					end
-						temp_board.game_board[spot -1] = spot
+					board.game_board[spot -1] = spot
 			end
-
 		end
+		possible_two_ways.flatten!
+	end
 
-		count(possible_two_ways)
+	def block_two_way_lose(board, piece = @opposing_piece)
+		(find_possible_two_ways(board, piece) & [create_two(board)])[0]
 	end
 
 			private
 
 	def count(possible_two_ways)
-		possible_two_ways.flatten!.map! {|spot| 
+		possible_two_ways.flatten.map do |spot| 
 			if possible_two_ways.count(spot) > 1
 				spot
-			end}
-		possible_two_ways.uniq.compact!
+			end
+		end
+		possible_two_ways.uniq.compact
 	end
 end
-@player = Player.new(true, true)
-@board = Board.new
-		@board.game_board[8] = "O"
-		@board.game_board[3] = "O"
-		@board.game_board[1] = "X"
-		# @board.display
-		p "\n\n\n"
-p @player.find_possible_two_ways(@board, "O")
+
+

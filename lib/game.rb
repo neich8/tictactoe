@@ -1,6 +1,7 @@
 require_relative "./player"
 require_relative "./board"
-
+# require "byebug"
+#Comment out lines 18 and 94 befor running tests
 class Game
 	attr_accessor :players
 	attr_reader :player1, :player2, :board
@@ -30,24 +31,28 @@ class Game
 			move(@player2, @player2.ai_move(@board))
 			puts "Computers turn"
 		end
-		next_player
+
 	end
 
 	def move(player, spot)
-		if player.active == true
-			if @board.game_board[spot - 1].is_a? Integer
+		if player.active
+			if spot.is_a? Integer
 				@board.game_board[spot - 1] = player.piece.type
-				if over? == true
+				if over?(player)
 					end_game
 				end
-				next_player
+			else
+				# turn
 			end
+		next_player
 		end
 	end
 
-	def over?
+	def over?(player)
 		sort_board
-		if three_in_a_(board.rows) == true || three_in_a_(board.columns) == true || three_in_a_(board.diagonals) == true
+
+		if three_in_a_(board.rows, player) || three_in_a_(board.columns, player)|| three_in_a_(board.diagonals, player) || no_moves
+
 			true
 		end
 	end
@@ -66,18 +71,15 @@ class Game
 
 	private
 
-	def three_in_a_(area)
-		area.each do |row|
-			if row == Array.new(3, @player2.piece.type)
-				return true
-			end
-		end
-	end
+	def three_in_a_(area, player)
 
-####Needs to be fixed
-#it sets active to false and then
-#sets then grabs the same and resets to true 
-#after first turn it just rotates between the same two1
+		area.select! { |row| row == Array.new(3, player.piece.type) }
+			if area.length > 0
+				true
+			else
+				false
+			end
+	end
 	def next_player
 		puts "Next Player is being set"
 		sleep 1
@@ -113,6 +115,12 @@ class Game
 
 	def pick_first_player
 		rand(2)
+	end
+
+	def no_moves
+		unless @board.game_board.select {|spot| spot.is_a? Integer}.length > 0
+			true
+		end
 	end
 end
 
