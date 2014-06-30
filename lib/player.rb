@@ -40,29 +40,20 @@ class Player
 
 	def block_two_in_a_row(board, piece= @opposing_piece)
 		blocks = []
-
-		if Computer.two_in_a_row(board, piece)
-			blocks << Computer.two_in_a_row(board, piece)
-		end
-		if Computer.two_in_a_column(board, piece)
-			blocks << Computer.two_in_a_column(board, piece)
-		end
-		if Computer.two_in_a_diagonal(board, piece)
-			blocks << Computer.two_in_a_diagonal(board, piece)
-		end
+		blocks << Computer.two_in_a_row(board, piece)
+		blocks << Computer.two_in_a_column(board, piece)
+		blocks << Computer.two_in_a_diagonal(board, piece)
 		blocks.flatten
 	end
 
 	def block(board)
-		if compare_moves_corners(board).length > 0
-			compare_moves_corners(board).sample
-			# compare_moves_corners(board).max_by{|num| num.size}
-		end
+		# if compare_moves_corners(board).length > 0
+			compare_moves_corners(board)
+		# end
 	end
-#board adds pieces two create two in a row even if two in a row is not possible
+
 	def create_two(board)
 		if find_moves(board, piece.type).length != 0 
-
 			find_moves(board, piece.type).max_by{|num| num.size}
 		end
 	end
@@ -78,7 +69,6 @@ class Player
 			moves << Computer.row_includes?(board, piece)
 			moves << Computer.column_includes?(board, piece)
 			moves << Computer.diagonal_includes?(board, piece)
-
 		moves.flatten!
 	end
 
@@ -93,41 +83,32 @@ class Player
 
 	def find_possible_two_ways(board, piece= @opposing_piece)
 		possible_two_ways = []
-		temp_board = board
-		temp_board.game_board.each do |spot|
+		board.game_board.each do |spot|
 			if spot.is_a? Integer
-				temp_board.game_board[spot -1] = piece
-					if block_two_in_a_row(temp_board, piece).length > 0
-						possible_two_ways << block_two_in_a_row(temp_board, piece)
+				board.game_board[spot -1] = piece
+					if block_two_in_a_row(board, piece).length > 0
+						possible_two_ways << block_two_in_a_row(board, piece)
 					end
-					temp_board.game_board[spot -1] = spot
+					board.game_board[spot -1] = spot
 			end
 		end
-		count(possible_two_ways)
+		possible_two_ways.flatten!
 	end
 
 	def block_two_way_lose(board, piece = @opposing_piece)
-
 		(find_possible_two_ways(board, piece) & [create_two(board)])[0]
 	end
 
 			private
 
 	def count(possible_two_ways)
-
- 			possible_two_ways.flatten.map {|spot| 
-				if possible_two_ways.count(spot) > 1
-					spot
-				end}
-			possible_two_ways.uniq.compact
+		possible_two_ways.flatten.map do |spot| 
+			if possible_two_ways.count(spot) > 1
+				spot
+			end
 		end
-
+		possible_two_ways.uniq.compact
+	end
 end
-# @player = Player.new(true, true)
-# @board = Board.new
-# 		@board.game_board[8] = "O"
-# 		@board.game_board[3] = "O"
-# 		@board.game_board[1] = "X"
-# 		# @board.display
-# p @player.block_two_way_lose(@board, "O")
+
 

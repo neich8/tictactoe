@@ -56,7 +56,7 @@ describe "Computer player" do
 
 	it "puts in a corner and block spot if possible" do
 		@board.game_board[6] = "O"
-		expect(@player.block(@board)).to eql(9)
+		expect(@player.block(@board)).to include(9)
 	end
 
 	it "completes three in a row" do 

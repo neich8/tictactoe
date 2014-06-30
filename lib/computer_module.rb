@@ -41,11 +41,11 @@ module Computer
 	def self.row_includes?(board, piece)
 		board.find_rows.each do |row|
 			if row.include? piece
-				unless row.include? Computer.find_piece(piece)
+				# unless row.include? Computer.find_piece(piece)
 					# puts "row includes my piece only"
 					# p row
 					return row.select{|spot| spot.is_a? Integer}
-				end
+				# end
 			end
 		end
 	end
@@ -53,11 +53,11 @@ module Computer
 	def self.column_includes?(board, piece)
 		board.find_columns.each do |column|
 			if column.include? piece
-				unless column.include? Computer.find_piece(piece)
+				# unless column.include? Computer.find_piece(piece)
 					# puts "column includes my piece only"
 					# p column
-					column.select{|spot| spot.is_a? Integer}
-				end
+					return column.select{|spot| spot.is_a? Integer}
+				# end
 			end
 		end
 	end
@@ -65,11 +65,11 @@ module Computer
 	def self.diagonal_includes?(board, piece)
 		board.find_diagonals.each do |diagonal|
 			if diagonal.include? piece
-				unless diagonal.include? Computer.find_piece(piece)
-						# puts "diagonal includes my piece only"
-						# p column
+				# unless diagonal.include? Computer.find_piece(piece)
+				# 		# puts "diagonal includes my piece only"
+				# 		# p column
 					return diagonal.select{|spot| spot.is_a? Integer}
-				end
+				# end
 			end
 		end
 	end
