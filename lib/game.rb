@@ -15,7 +15,7 @@ class Game
 		else
 			activate_players(false,true)
 		end
-		 # turn
+		 turn
 	end
 
 	def turn
@@ -35,13 +35,15 @@ class Game
 
 	def move(player, spot)
 		if player.active == true
-			if @board.game_board[spot - 1].is_a? Integer
+			if spot.is_a? Integer
 				@board.game_board[spot - 1] = player.piece.type
 				if over? == true
 					end_game
 				end
-				next_player
+			else
+				turn
 			end
+		next_player
 		end
 	end
 
@@ -94,7 +96,7 @@ class Game
 						puts "player twos turn"
 			puts @player2.active
 		end
-		 # turn
+		 turn
 	end
 
 	def find_player
