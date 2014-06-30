@@ -118,9 +118,9 @@ class Game
 	end
 
 	def no_moves
-		# unless @board.game_board.select {|spot| spot.is_a? Integer} > 0
-		# 	true
-		# end
+		unless @board.game_board.select {|spot| spot.is_a? Integer}.length > 0
+			true
+		end
 	end
 end
 
