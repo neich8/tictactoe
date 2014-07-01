@@ -1,6 +1,21 @@
 require "byebug"
 
 module Computer
+	def find_moves(board)
+		best_possible_move(board, board.flatten!.select{|spot| spot.is_a? Integer}, "X")
+	end
+
+	def best_possible_move(board, possible_moves,piece ,scores={})
+		possible_moves.each do |move|
+			board[move-1] = piece
+			if game.over?
+				scores[move] += game.score || scores[move] = game.score
+			else
+				best_possible_move(board, possible_moves, find_piece(piece), scores)
+			end
+		end
+		scores
+	end
 
 	def self.two_in_a_row(board, piece)
 		two_rows = []

@@ -1,0 +1,25 @@
+Mini max strategy
+
+needs to create every possible outcome
+
+first move should come up with nine possible outcomes
+second eight possible outcomes.
+def minimax
+board.each do |spot|
+		spot = "X"
+	if spot.lose? 
+		return -1
+	elsif spot.win?
+		return +1
+	elsif spot.tie?
+		return 0
+	else 
+		minimax
+	end
+	return
+
+
+each possible outcome of a win is +1 and a loss is -1 
+tie is 0
+
+points tally up and best possible move ie one with most points is selected

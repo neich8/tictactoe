@@ -23,19 +23,19 @@ class Player
 	end
 
 	def ai_move(board)
-		if end_game(board).is_a? Integer
-			return end_game(board)
-		elsif middle(board).is_a? Integer
-			return middle(board)
-		elsif block_two_way_lose(board).is_a? Integer
-			return block_two_way_lose(board)
-		elsif block_two_in_a_row(board)[0].is_a? Integer
-			return block_two_in_a_row(board)[0]
-		elsif block(board).is_a? Integer
-			return block(board)
-		elsif create_two(board).is_a? Integer
-			return create_two(board)
-		end
+		# if end_game(board).is_a? Integer
+		# 	return end_game(board)
+		# elsif middle(board).is_a? Integer
+		# 	return middle(board)
+		# elsif block_two_way_lose(board).is_a? Integer
+		# 	return block_two_way_lose(board)
+		# elsif block_two_in_a_row(board)[0].is_a? Integer
+		# 	return block_two_in_a_row(board)[0]
+		# elsif block(board).is_a? Integer
+		# 	return block(board)
+		# elsif create_two(board).is_a? Integer
+		# 	return create_two(board)
+		# end
 	end
 
 	def block_two_in_a_row(board, piece= @opposing_piece)

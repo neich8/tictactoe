@@ -17,6 +17,10 @@ attr_reader  :side_length, :corners, :diagonals, :game_board, :rows, :columns
 		corners[2] = @game_board[(@game_board.length - 1) - corner_seperation]
 		corners[3] = @game_board.last
 	end
+	
+	def get_all_sorted
+		find_rows + find_columns + find_diagonals
+	end
 
 	def find_rows
 		@rows = @game_board.each_slice(@side_length).to_a
