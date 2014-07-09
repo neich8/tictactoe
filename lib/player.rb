@@ -13,7 +13,7 @@ class Player
   end
 
   def pick_piece
-    if @active == true && @piece == nil
+    if @active && @piece.nil?
       @piece = Piece.new("X")
       @opposing_piece = "O"
     else
@@ -25,15 +25,25 @@ class Player
   def ai_move(board)
     if end_game(board).available?
       return end_game(board)
-    elsif middle(board).available?
+    end
+
+    if middle(board).available?
       return middle(board)
-    elsif block_two_way_lose(board).available?
+    end
+
+    if block_two_way_lose(board).available?
       return block_two_way_lose(board)
-    elsif block_two_in_a_row(board)[0].available?
+    end
+
+    if block_two_in_a_row(board)[0].available?
       return block_two_in_a_row(board)[0]
-    elsif block(board).available?
+    end 
+
+    if block(board).available?
       return block(board)
-    elsif create_two(board).available?
+    end 
+
+    if create_two(board).available?
       return create_two(board)
     end
   end
@@ -47,9 +57,7 @@ class Player
   end
 
   def block(board)
-    # if compare_moves_corners(board).length > 0
     compare_moves_corners(board)
-    # end
   end
 
   def create_two(board)
@@ -84,14 +92,17 @@ class Player
   def find_possible_two_ways(board, piece= @opposing_piece)
     possible_two_ways = []
     board.game_board.each do |spot|
-      if spot.available?
-        board.game_board[spot - 1] = piece
-        if block_two_in_a_row(board, piece).length > 0
-          possible_two_ways << block_two_in_a_row(board, piece)
-        end
-        board.game_board[spot - 1] = spot
-      end
+      next unless spot.available?
+
+      board.game_board[spot - 1] = piece
+
+      next if block_two_in_a_row(board, piece).length.zero?
+
+      possible_two_ways << block_two_in_a_row(board, piece)
+
+      board.game_board[spot - 1] = spot
     end
+
     possible_two_ways.flatten!
   end
 
