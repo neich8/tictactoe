@@ -5,6 +5,7 @@ require_relative "./board"
 class Game
   attr_accessor :players
   attr_reader :player1, :player2, :board
+
   def initialize
     @board = Board.new
     add_players
@@ -16,32 +17,28 @@ class Game
   end
 
   def turn
-    find_player
     puts "'s turn"
     @board.display
 
-    if @player1.active == true
+    if @player1.active
       puts "Type a number to pick a spot"
-      move(@player1, gets.chomp.to_i)
+      move(@player1, gets.to_i)
     else
       move(@player2, @player2.ai_move(@board))
       puts "Computers turn"
     end
-
   end
 
   def move(player, spot)
-    if player.active
-      if spot.is_a? Integer
-        @board.game_board[spot - 1] = player.piece.type
-        if over?(player)
-          end_game
-        end
-      else
-        # turn
-      end
-      next_player
+    return unless player.active
+
+    if spot.is_a? Integer
+      @board.game_board[spot - 1] = player.piece.type
+
+      end_game if over?(player)
     end
+
+    next_player
   end
 
   def over?(player)
@@ -74,30 +71,12 @@ class Game
   def next_player
     puts "Next Player is being set"
     sleep 1 unless ENV["RUBY_ENV"] == "test"
-    if @player1.active
 
-      @player1.active = false
-      @player2.active = true
-      puts "player ones turn"
-      puts @player1.active
-    else
+    @player2.active = @player1.active   # Set p2 to p1's status
+    @player1.active = ! @player1.active # Toggle p1
 
-      @player1.active = true
-      @player2.active = false
-      puts "player twos turn"
-      puts @player2.active
-    end
-    # turn
+    puts "Player #{@player1.active ? 1 : 2}'s turn"
   end
-
-  def find_player
-    if @player1.active == true
-      @players = {human: @player1, computer: @player2}
-    else
-      @players = {computer: @player2, human: @player1}
-    end
-  end
-
 
   def activate_players(player1_status, player2_status)
     @player1 = Player.new(player1_status, true)
@@ -111,8 +90,7 @@ class Game
   def no_moves
     @board.game_board.select {|spot| spot.is_a? Integer}.length.zero?
   end
+
 end
 
-if $1 == __FILE__
-  Game.new
-end
+Game.new if __FILE__ == $!
