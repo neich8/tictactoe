@@ -59,13 +59,22 @@ describe "::Game" do
  #  	@game.turn(@game.player1)
  #  end
 
-  it "lets me know when over" do
-  		@game.board.game_board[0] = "X"
-  		@game.board.game_board[1] = "X"
-  		@game.board.game_board[2] = "X"
-  	expect(@game.over?(@player1)).to eql(true)
-  end
+ describe "#over?" do
+   before(:each) do
+     @game = Game.new
+     @game.send(:activate_players, true, false)
+     @player1 = @game.player1
+     @computer = @game.player2
+   end
 
+   it "lets me know when over" do
+     @game.board.game_board[0] = "X"
+     @game.board.game_board[1] = "X"
+     @game.board.game_board[2] = "X"
+
+     expect(@game.over?(@player1)).to eql(true)
+   end
+ end
 end
 
 
