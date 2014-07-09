@@ -29,37 +29,25 @@ class Board
   end
 
   def find_diagonals
-    @diagonals = []
-    @diagonals << diag_down_left
-    @diagonals << diag_down_right
+    @diagonals = [ diag_down_left, diag_down_right ]
   end
 
   def display
-    game_board.each_slice(3).to_a.each {|row|
-      p row}
+    game_board.each_slice(3).to_a.each {|row| p row}
   end
-
 
   private
 
   def diag_down_right
-    down_left = []
-    diagonal_spot = side_length - 1
-    find_rows.each do |row|
-      down_left << row[diagonal_spot]
-      diagonal_spot -= 1
+    find_rows.map.with_index do |row, i|
+      row[side_length - 1 - i]
     end
-    down_left
   end
 
   def diag_down_left
-    down_right = []
-    diagonal_spot = 0
-    find_rows.each do |row|
-      down_right << row[diagonal_spot]
-      diagonal_spot += 1
+    find_rows.map.with_index do |row, i|
+      row[i]
     end
-    down_right
   end
 
   def side_length
