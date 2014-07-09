@@ -1,6 +1,6 @@
 require_relative "./pieces"
 require_relative "./board"
-require_relative "./computer_module"
+require_relative "./computer"
 require "byebug"
 #The computer doesnt know when to stop putting pieces on the board
 class Player 
