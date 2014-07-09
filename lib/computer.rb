@@ -46,7 +46,7 @@ module Computer
 		board.send(method).each do |set|
 			if set.count(piece) == 2 
 				unless set.include?(find_piece(piece))
-					res << set.select{|spot| spot.is_a? Integer}
+          res << set.select(&:available?)
 				end
 			end
 		end
@@ -56,7 +56,7 @@ module Computer
   def something_includes?(method, board, piece)
     board.send(method).each do |set|
       if set.include? piece
-        return set.select{|spot| spot.is_a? Integer}
+        return set.select(&:available?)
       end
     end
   end

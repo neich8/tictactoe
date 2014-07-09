@@ -23,17 +23,17 @@ class Player
   end
 
   def ai_move(board)
-    if end_game(board).is_a? Integer
+    if end_game(board).available?
       return end_game(board)
-    elsif middle(board).is_a? Integer
+    elsif middle(board).available?
       return middle(board)
-    elsif block_two_way_lose(board).is_a? Integer
+    elsif block_two_way_lose(board).available?
       return block_two_way_lose(board)
-    elsif block_two_in_a_row(board)[0].is_a? Integer
+    elsif block_two_in_a_row(board)[0].available?
       return block_two_in_a_row(board)[0]
-    elsif block(board).is_a? Integer
+    elsif block(board).available?
       return block(board)
-    elsif create_two(board).is_a? Integer
+    elsif create_two(board).available?
       return create_two(board)
     end
   end
@@ -59,7 +59,7 @@ class Player
   end
 
   def middle(board)
-    if board.game_board[4].is_a? Integer
+    if board.game_board[4].available?
       board.game_board[4]
     end
   end
@@ -84,7 +84,7 @@ class Player
   def find_possible_two_ways(board, piece= @opposing_piece)
     possible_two_ways = []
     board.game_board.each do |spot|
-      if spot.is_a? Integer
+      if spot.available?
         board.game_board[spot - 1] = piece
         if block_two_in_a_row(board, piece).length > 0
           possible_two_ways << block_two_in_a_row(board, piece)

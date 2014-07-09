@@ -2,6 +2,14 @@ require_relative "./player"
 require_relative "./board"
 # require "byebug"
 #Comment out lines 18 and 94 befor running tests
+class Fixnum
+  def available?; true; end
+end
+
+class String
+  def available?; false; end
+end
+
 class Game
   attr_accessor :players
   attr_reader :player1, :player2, :board
@@ -32,7 +40,7 @@ class Game
   def move(player, spot)
     return unless player.active
 
-    if spot.is_a? Integer
+    if spot.available?
       @board.game_board[spot - 1] = player.piece.type
 
       end_game if over?(player)
@@ -88,7 +96,7 @@ class Game
   end
 
   def no_moves
-    @board.game_board.select {|spot| spot.is_a? Integer}.length.zero?
+    @board.game_board.select {|spot| spot.available?}.length.zero?
   end
 
 end
