@@ -1,5 +1,5 @@
 class Piece
-	attr :type
+	attr_reader :type
 	def initialize(piece)
 		@type = piece
 	end
