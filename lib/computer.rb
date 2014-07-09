@@ -2,76 +2,48 @@ require "byebug"
 
 module Computer
 
-	def self.two_in_a_row(board, piece)
-		two_rows = []
-		board.find_rows.each do |row|
-			if row.count(piece) == 2 
-				unless row.include?(find_piece(piece))
-					two_rows << row.select{|spot| spot.is_a? Integer}
+  def self.two_in_a_(method, board, piece)
+		res = []
+		board.send(method).each do |set|
+			if set.count(piece) == 2 
+				unless set.include?(find_piece(piece))
+					res << set.select{|spot| spot.is_a? Integer}
 				end
 			end
 		end
-		two_rows.flatten
+		res.flatten
+  end
+
+	def self.two_in_a_row(board, piece)
+    two_in_a_(:find_rows, board, piece)
 	end
 
 	def self.two_in_a_column(board, piece)
-		two_columns = []
-		board.find_columns.each do |column|
-			if column.count(piece) == 2
-				unless column.include?(find_piece(piece))
-					two_columns << column.select{|spot| spot.is_a? Integer}
-				end
-			end
-		end
-		two_columns.flatten
+    two_in_a_(:find_columns, board, piece)
 	end
 
 	def self.two_in_a_diagonal(board, piece)
-		two_diagonals = []
-		board.find_diagonals.each do |diagonal|
-			if diagonal.count(piece) == 2
-				unless diagonal.include?(find_piece(piece))
-					two_diagonals << diagonal.select{|spot| spot.is_a? Integer}
-				end
-			end
-		end
-		two_diagonals.flatten
+    two_in_a_(:find_diagonals, board, piece)
 	end
 
+  def self.something_includes?(method, board, piece)
+    board.send(method).each do |set|
+      if set.include? piece
+        return set.select{|spot| spot.is_a? Integer}
+      end
+    end
+  end
+
 	def self.row_includes?(board, piece)
-		board.find_rows.each do |row|
-			if row.include? piece
-				# unless row.include? Computer.find_piece(piece)
-					# puts "row includes my piece only"
-					# p row
-					return row.select{|spot| spot.is_a? Integer}
-				# end
-			end
-		end
+    something_includes?(:find_rows, board, piece)
 	end
 
 	def self.column_includes?(board, piece)
-		board.find_columns.each do |column|
-			if column.include? piece
-				# unless column.include? Computer.find_piece(piece)
-					# puts "column includes my piece only"
-					# p column
-					return column.select{|spot| spot.is_a? Integer}
-				# end
-			end
-		end
+    something_includes?(:find_columns, board, piece)
 	end
 
 	def self.diagonal_includes?(board, piece)
-		board.find_diagonals.each do |diagonal|
-			if diagonal.include? piece
-				# unless diagonal.include? Computer.find_piece(piece)
-				# 		# puts "diagonal includes my piece only"
-				# 		# p column
-					return diagonal.select{|spot| spot.is_a? Integer}
-				# end
-			end
-		end
+    something_includes?(:find_diagonals, board, piece)
 	end
 
 	def self.two_way_loses(board,piece)
